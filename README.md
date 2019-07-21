@@ -10,6 +10,7 @@
 
 - implement ability to edit items
 - add fields for quantity
+- save data in JSON format, export that JSON to CSV
 
 ## Project setup
 

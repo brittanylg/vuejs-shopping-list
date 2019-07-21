@@ -23,6 +23,10 @@
             <v-card light>
               <v-toolbar color="primary" dark>
                 <v-toolbar-title>Shopping List</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-toolbar-items>
+                  <v-btn depressed color="secondary" @click="">Export to CSV</v-btn>
+                </v-toolbar-items>
               </v-toolbar>
               <v-card-text>
                 <v-list>
@@ -113,7 +117,7 @@ export default {
     },
     removeItem: function(item) {
       this.list.splice(this.list.indexOf(item), 1);
-    },
+    }
   },
 }
 </script>
