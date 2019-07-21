@@ -1,28 +1,132 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app dark>
+    <v-toolbar app color="primary" dark absolute>
+      <v-toolbar-title class="font-weight-black">Shopping List App</v-toolbar-title>
+    </v-toolbar>
+    <v-content>
+      <v-container fluid>
+        <v-layout row my-4>
+          <v-flex xs12 sm6 md4 offset-sm3 offset-md4>
+            <v-card light>
+              <v-toolbar color="primary" dark>
+                <v-toolbar-title>Add Items</v-toolbar-title>
+              </v-toolbar>
+              <v-card-text>
+                <v-text-field label="enter item" v-model="newItem" :rules="rules" counter="20" clearable light solo @keyup.enter="addItem"></v-text-field>
+                <v-btn color="secondary" :disabled="isDisabled" @click="addItem">add item</v-btn>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+        <v-layout row my-4>
+          <v-flex xs12 sm6 md4 offset-sm3 offset-md4>
+            <v-card light>
+              <v-toolbar color="primary" dark>
+                <v-toolbar-title>Shopping List</v-toolbar-title>
+              </v-toolbar>
+              <v-card-text>
+                <v-list>
+                  <v-list-tile v-if="list.length === 0">
+                    <v-list-tile-content>
+                      <v-list-tile-title>You do not have any items in your shopping cart.</v-list-tile-title>
+                      <v-list-tile-sub-title>Use the form above to start adding items.</v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile v-for="item in list" :key="item.name">
+                    <v-list-tile-content>
+                      <v-list-tile-title :class="[item.purchased ? 'purchased text-muted' : '']" v-text="item.name"></v-list-tile-title>
+                    </v-list-tile-content>
+                    <v-list-tile-action>
+                      <v-btn flat icon color="info" disabled @click="editItem(item)">
+                        <v-icon>edit</v-icon>
+                      </v-btn>
+                    </v-list-tile-action>
+                    <v-list-tile-action>
+                      <v-btn flat icon v-if="item.purchased" color="secondary" @click="togglePurchased(item)">
+                        <v-icon>check</v-icon>
+                      </v-btn>
+                      <v-btn flat icon v-else color="infoLight" @click="togglePurchased(item)">
+                        <v-icon>check</v-icon>
+                      </v-btn>
+                    </v-list-tile-action>
+                    <v-list-tile-action>
+                      <v-btn flat icon color="error" @click="removeItem(item)">
+                        <v-icon>delete</v-icon>
+                      </v-btn>
+                    </v-list-tile-action>
+                  </v-list-tile>
+                </v-list>
+              </v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-    HelloWorld
-  }
+
+  },
+  data () {
+    return {
+      newItem: '',
+      rules: [v => v.length <= 20 || 'Max 20 characters'],
+      list: [
+        {
+          name: 'purchased item',
+          purchased: true
+        },
+        {
+          name: 'not purchased item',
+          purchased: false
+        }
+      ]
+    }
+  },
+  computed: {
+    isDisabled() {
+      return this.newItem.length === 0 || this.newItem.length > 20
+    }
+  },
+  methods: {
+    addItem: function() {
+      if (this.newItem.length !== 0 && this.newItem.length <= 20) {
+        this.list.push({
+          name: this.newItem,
+          purchased: false
+        });
+        this.newItem = '';
+      }
+    },
+    editItem: function(item) {
+      // todo: edit this item
+    },
+    togglePurchased: function(item) {
+      item.purchased = !item.purchased;
+    },
+    removeItem: function(item) {
+      this.list.splice(this.list.indexOf(item), 1);
+    },
+  },
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.v-btn {
+  margin: 0 !important;
+}
+input {
+  background-color: transparent;
+  border: 0;
+}
+button {
+  border: 0;
+}
+.purchased {
+  text-decoration: line-through;
 }
 </style>
