@@ -4,7 +4,7 @@
 
 ### Desktop View
 
-![desktop version of shopping list app](screenshots/desktop-shopping-list.PNG)
+![desktop version of shopping list app](screenshots/desktop-shopping-list.png)
 
 ## todo
 
