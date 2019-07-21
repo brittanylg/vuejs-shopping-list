@@ -1,25 +1,25 @@
 <template>
   <v-app dark>
-    <v-toolbar app color="primary" dark absolute>
-      <v-toolbar-title class="font-weight-black">Shopping List App</v-toolbar-title>
+    <v-toolbar app color="primary" absolute>
+      <v-toolbar-title>Shopping List App</v-toolbar-title>
     </v-toolbar>
     <v-content>
       <v-container fluid>
         <v-layout row my-4>
-          <v-flex xs12 sm6 md4 offset-sm3 offset-md4>
+          <v-flex xs12 sm8 md6 lg4 offset-sm2 offset-md3 offset-lg4>
             <v-card light>
               <v-toolbar color="primary" dark>
                 <v-toolbar-title>Add Items</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-                <v-text-field label="enter item" v-model="newItem" :rules="rules" counter="20" clearable light solo @keyup.enter="addItem"></v-text-field>
+                <v-text-field label="enter item" v-model="newItem" :rules="rules" counter="20" clearable solo @keyup.enter="addItem"></v-text-field>
                 <v-btn color="secondary" :disabled="isDisabled" @click="addItem">add item</v-btn>
               </v-card-text>
             </v-card>
           </v-flex>
         </v-layout>
         <v-layout row my-4>
-          <v-flex xs12 sm6 md4 offset-sm3 offset-md4>
+          <v-flex xs12 sm8 md6 lg4 offset-sm2 offset-md3 offset-lg4>
             <v-card light>
               <v-toolbar color="primary" dark>
                 <v-toolbar-title>Shopping List</v-toolbar-title>
@@ -37,7 +37,7 @@
                       <v-list-tile-title :class="[item.purchased ? 'purchased text-muted' : '']" v-text="item.name"></v-list-tile-title>
                     </v-list-tile-content>
                     <v-list-tile-action>
-                      <v-btn flat icon color="info" disabled @click="editItem(item)">
+                      <v-btn v-if="item.edit" flat icon color="info" disabled @click="editItem(item)">
                         <v-icon>edit</v-icon>
                       </v-btn>
                     </v-list-tile-action>
@@ -78,13 +78,15 @@ export default {
       list: [
         {
           name: 'purchased item',
-          purchased: true
+          purchased: true,
+          edit: false
         },
         {
           name: 'not purchased item',
-          purchased: false
+          purchased: false,
+          edit: false
         }
-      ]
+      ],
     }
   },
   computed: {
@@ -97,7 +99,8 @@ export default {
       if (this.newItem.length !== 0 && this.newItem.length <= 20) {
         this.list.push({
           name: this.newItem,
-          purchased: false
+          purchased: false,
+          edit: false
         });
         this.newItem = '';
       }
